@@ -3,6 +3,7 @@ package com.devspace.recyclerview
 import ContactListAdapter
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -38,6 +39,10 @@ class MainActivity : AppCompatActivity() {
 
         ivList.setOnClickListener {
             rvList.layoutManager = LinearLayoutManager(this)
+        }
+
+        adapter.setOnCLickListener { contact ->
+            Log.d("Naldo", contact.toString())
         }
 
     }

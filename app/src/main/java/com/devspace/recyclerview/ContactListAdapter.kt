@@ -14,6 +14,8 @@ class ContactListAdapter:
     ListAdapter<Contact, ContactListAdapter.ContactViewHolder>
         (ContactDiffUtils()) {
 
+            private lateinit var onClickListener: (Contact) -> Unit   //Som de click no kotlin
+
     //criar um view holder
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_list, parent, false)
@@ -23,20 +25,30 @@ class ContactListAdapter:
     //bind - atrelar o dado com a UI
     override fun onBindViewHolder(holder: ContactViewHolder, position: Int) {
         val contact = getItem(position)
-        holder.bind(contact)
+        holder.bind(contact, onClickListener)
+    }
+
+    //executando a funcao de click
+
+    fun setOnCLickListener(onClick: (Contact) -> Unit) {
+        onClickListener = onClick
     }
 
     //view que segura os dados
-    class ContactViewHolder(view: View) : RecyclerView.ViewHolder(view){
+    class ContactViewHolder(private val view: View) : RecyclerView.ViewHolder(view){
         private val tvName = view.findViewById<TextView>(R.id.tv_name)
         private val tvPhone = view.findViewById<TextView>(R.id.tv_phone)
         private val image = view.findViewById<ImageView>(R.id.iv_image)
 
 
-        fun bind(contact: Contact){
+        fun bind(contact: Contact, onClick: (Contact) -> Unit){
             tvName.text = contact.name
             tvPhone.text = contact.phone
             image.setImageResource(contact.icon)
+
+            view.setOnClickListener {
+                onClick.invoke(contact)
+            }
         }
     }
 
